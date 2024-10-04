@@ -1,5 +1,7 @@
 'use strict';
 
+const { match } = require("xregexp");
+
 
 define('forum/register', [
 	'translator', 'slugify', 'api', 'bootbox', 'forum/login', 'zxcvbn', 'jquery-form',
@@ -114,6 +116,32 @@ define('forum/register', [
 		$('#username').trigger('focus');
 	};
 
+	function permutacionRandom(str) {
+		let arr = str.split('');
+		for (let i = arr.length - 1; i > 0; i--) {
+		  let j = Math.floor(Math.random() * (i + 1));
+		  [arr[i], arr[j]] = [arr[j], arr[i]];  // Intercambio de elementos
+		}
+		return arr.join('');
+	}
+
+	function generateUsername(username, userslug, min, max){
+		//const generate = `${username}`+"-"+Math.floor(Math.random()*max);
+		if (username.length == ajaxify.data.maximumUsernameLength) {
+			const generate = permutacionRandom(username);	
+		}else{
+			const rest = ajaxify.data.maximumUsernameLength - username.length;
+			
+			if (rest > 3){
+				const randomNumber = Math.floor(Math.random()*3)
+			}else{
+				const randomNumber = Math.floor(Math.random()*rest)
+			}
+			
+		}
+	}		
+		  
+
 	function validateUsername(username, callback) {
 		callback = callback || function () {};
 
@@ -135,7 +163,7 @@ define('forum/register', [
 				if (results.every(obj => obj.status === 'rejected')) {
 					showSuccess(usernameInput, username_notify, successIcon);
 				} else {
-					showError(usernameInput, username_notify, '[[error:username-taken]]');
+					showError(usernameInput, username_notify, `[[error:username-taken, ${username}-123]]`);
 				}
 
 				callback();
